@@ -1,0 +1,86 @@
+{
+  "user": {
+    "firstName": "Praises",
+    "lastName": "Amaiyo",
+    "role": "Compliance Lead",
+    "avatar": "/images/praises-avatar.png"
+  },
+  "stats": [
+    {
+      "label": "Total Permits",
+      "value": "1,248",
+      "trend": "+12%",
+      "color": "blue",
+      "icon": "solar:folder-bold"
+    },
+    {
+      "label": "Active Permits",
+      "value": "982",
+      "trend": "+5%",
+      "color": "green",
+      "icon": "solar:check-circle-bold"
+    },
+    {
+      "label": "Expiring Soon",
+      "value": "45",
+      "trend": "-2%",
+      "color": "orange",
+      "icon": "solar:danger-bold"
+    },
+    {
+      "label": "Expired",
+      "value": "221",
+      "trend": "+8%",
+      "color": "red",
+      "icon": "solar:close-circle-bold"
+    }
+  ],
+  "monthlyExpirations": [
+    { "month": "Jan", "value": 45 },
+    { "month": "Feb", "value": 52 },
+    { "month": "Mar", "value": 85 },
+    { "month": "Apr", "value": 30 },
+    { "month": "May", "value": 60 },
+    { "month": "Jun", "value": 95 },
+    { "month": "Jul", "value": 20 },
+    { "month": "Aug", "value": 40 },
+    { "month": "Sep", "value": 75 },
+    { "month": "Oct", "value": 82 },
+    { "month": "Nov", "value": 35 },
+    { "month": "Dec", "value": 50 }
+  ],
+  "recentDocuments": [
+    {
+      "id": "1",
+      "name": "NUPRC - Soil Remediation.pdf",
+      "type": "Environmental",
+      "status": "Active",
+      "dateUploaded": "2025-05-12",
+      "expiry": "2026-05-12"
+    },
+    {
+      "id": "2",
+      "name": "NCEC - Consultancy.doc",
+      "type": "Operating",
+      "status": "Expiring Soon",
+      "dateUploaded": "2025-03-20",
+      "expiry": "2026-03-20"
+    },
+    {
+      "id": "3",
+      "name": "Nuprc - Land Reclamation.img",
+      "type": "Environmental",
+      "status": "Expired",
+      "dateUploaded": "2025-01-05",
+      "expiry": "2026-01-05"
+    }
+  ],
+  "compliance": {
+    "percentage": 94.9,
+    "stats": [
+      { "label": "Full Compliance", "count": 820, "color": "bg-primary" },
+      { "label": "Partial/Conditional", "count": 145, "color": "bg-warning" },
+      { "label": "Non-Compliant", "count": 14, "color": "bg-danger" }
+    ]
+  }
+}
