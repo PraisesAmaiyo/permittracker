@@ -1,5 +1,6 @@
 'use client';
 import mockData from '@/data/mockDashboard.json';
+import { getFileIcon } from '@/utils/fileHelpers';
 import { Icon } from '@iconify/react';
 
 const statusStyles = {
@@ -26,7 +27,9 @@ export default function RecentDocuments({ documents = [] }) {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="text-[11px] uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-slate-800/30">
-              <th className="px-6 py-3 font-bold">Document Name</th>
+              <th className="px-6 py-3 font-bold sticky left-0 bg-slate-50 dark:bg-[#1a202c] z-10">
+                Document Name
+              </th>
               <th className="px-6 py-3 font-bold">Type/Category</th>
               <th className="px-6 py-3 font-bold">Date Uploaded</th>
               <th className="px-6 py-3 font-bold">Expiry</th>
@@ -44,10 +47,10 @@ export default function RecentDocuments({ documents = [] }) {
                   key={doc.id}
                   className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors group"
                 >
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 sticky left-0 bg-white dark:bg-[#1a202c] group-hover:bg-slate-50 dark:group-hover:bg-slate-800 shadow-[2px_0_5px_rgba(0,0,0,0.05)]">
                     <div className="flex items-center gap-3">
                       <Icon icon={icon} className={color} fontSize={20} />
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                         {doc.name}
                       </span>
                     </div>
@@ -85,27 +88,3 @@ export default function RecentDocuments({ documents = [] }) {
     </div>
   );
 }
-
-const getFileIcon = (fileName) => {
-  const ext = fileName.split('.').pop().toLowerCase();
-  switch (ext) {
-    case 'pdf':
-      return { icon: 'solar:file-download-bold', color: 'text-red-500' };
-    case 'doc':
-    case 'docx':
-      return { icon: 'solar:document-bold', color: 'text-blue-500' };
-    case 'xls':
-    case 'xlsx':
-    case 'csv':
-      return {
-        icon: 'solar:checklist-minimalistic-bold',
-        color: 'text-green-600',
-      };
-    case 'jpg':
-    case 'png':
-    case 'img':
-      return { icon: 'solar:gallery-bold', color: 'text-purple-500' };
-    default:
-      return { icon: 'solar:file-text-bold', color: 'text-slate-400' };
-  }
-};

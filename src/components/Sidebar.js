@@ -2,6 +2,8 @@
 import { Icon } from '@iconify/react';
 import mockData from '@/data/mockDashboard.json';
 import { useNotifications } from '@/context/NotificationContext';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const { unreadCount } = useNotifications();
@@ -33,13 +35,18 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         <Logo />
 
         <nav className="flex-1 p-4 space-y-2">
-          <NavItem icon="solar:widget-bold" label="Dashboard" active />
-          <NavItem icon="solar:document-bold" label="Documents" />
-          <NavItem icon="solar:chart-bold" label="Reports" />
+          <NavItem icon="solar:widget-bold" label="Dashboard" page="" active />
+          <NavItem
+            icon="solar:document-bold"
+            label="Documents"
+            page="documents"
+          />
+          <NavItem icon="solar:chart-bold" label="Reports" page="reports" />
           <NavItem
             icon="solar:bell-bing-bold"
             label="Notifications"
             badge={unreadCount > 0 ? unreadCount : null}
+            page="notifications"
           />
         </nav>
 
@@ -74,24 +81,32 @@ function SidebarUserProfile() {
   );
 }
 
-// A sub-component to keep things clean
-function NavItem({ icon, label, active, badge }) {
+function NavItem({ icon, label, badge, page }) {
+  const pathname = usePathname();
+
+  // Logic:
+  // If page is "" (Dashboard), it matches exact "/"
+  // Otherwise, check if current path starts with the page name
+  const isActive =
+    page === '' ? pathname === '/' : pathname.startsWith(`/${page}`);
+
   return (
-    <a
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors cursor-pointer ${
-        active
-          ? 'bg-primary/10 text-primary'
-          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50'
+    <Link
+      href={page === '' ? '/' : `/${page}`}
+      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+        isActive
+          ? 'bg-primary/10 dark:bg-primary/20 text-primary  dark:text-slate-50 font-bold border-r-4 border-primary'
+          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
       }`}
     >
-      <Icon icon={icon} fontSize={20} />
+      <Icon icon={icon} fontSize={22} />
       <p className="text-sm font-medium flex-1">{label}</p>
       {badge && (
         <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
           {badge}
         </span>
       )}
-    </a>
+    </Link>
   );
 }
 

@@ -11,28 +11,32 @@
       "value": "1,248",
       "trend": "+12%",
       "color": "blue",
-      "icon": "solar:folder-bold"
+      "icon": "solar:folder-bold",
+      "filterType": "all"
     },
     {
       "label": "Active Permits",
       "value": "982",
       "trend": "+5%",
       "color": "green",
-      "icon": "solar:check-circle-bold"
+      "icon": "solar:check-circle-bold",
+      "filterType": "active-permits"
     },
     {
       "label": "Expiring Soon",
       "value": "45",
       "trend": "-2%",
       "color": "orange",
-      "icon": "solar:danger-bold"
+      "icon": "solar:danger-bold",
+      "filterType": "expiring-soon"
     },
     {
       "label": "Expired",
       "value": "221",
       "trend": "+8%",
       "color": "red",
-      "icon": "solar:close-circle-bold"
+      "icon": "solar:close-circle-bold",
+      "filterType": "expired-permits"
     }
   ],
   "monthlyExpirations": [
@@ -82,5 +86,307 @@
       { "label": "Partial/Conditional", "count": 145, "color": "bg-warning" },
       { "label": "Non-Compliant", "count": 14, "color": "bg-danger" }
     ]
-  }
+  },
+  "allDocuments": [
+    {
+      "id": 1,
+      "name": "NUPRC Operational Permit - Phase 1.pdf",
+      "category": "Upstream",
+      "responsibleName": "Olumide Adebayo",
+      "responsibleInitials": "OA",
+      "issueDate": "2024-01-15",
+      "expiryDate": "2026-01-14",
+      "status": "Active"
+    },
+    {
+      "id": 2,
+      "name": "NOGIC JQS Certification 2024.docx",
+      "category": "Nigerian Content",
+      "responsibleName": "Chidi Okeke",
+      "responsibleInitials": "CO",
+      "issueDate": "2023-05-10",
+      "expiryDate": "2024-05-20",
+      "status": "Expiring Soon"
+    },
+    {
+      "id": 3,
+      "name": "FIRS Tax Clearance Certificate.pdf",
+      "category": "Fiscal",
+      "responsibleName": "Amina Yusuf",
+      "responsibleInitials": "AY",
+      "issueDate": "2022-03-01",
+      "expiryDate": "2024-03-01",
+      "status": "Expired"
+    },
+    {
+      "id": 4,
+      "name": "NCEC Category A - Engineering.pdf",
+      "category": "Nigerian Content",
+      "responsibleName": "Babajide Williams",
+      "responsibleInitials": "BW",
+      "issueDate": "2024-02-12",
+      "expiryDate": "2025-02-11",
+      "status": "Active"
+    },
+    {
+      "id": 5,
+      "name": "Medical Retainership - Lagoon Hospital.pdf",
+      "category": "Health & Safety",
+      "responsibleName": "Olumide Adebayo",
+      "responsibleInitials": "OA",
+      "issueDate": "2024-04-01",
+      "expiryDate": "2024-10-01",
+      "status": "Active"
+    },
+    {
+      "id": 6,
+      "name": "NESREA Environmental Audit.pdf",
+      "category": "Environment",
+      "responsibleName": "Chidi Okeke",
+      "responsibleInitials": "CO",
+      "issueDate": "2023-11-20",
+      "expiryDate": "2024-11-19",
+      "status": "Active"
+    },
+    {
+      "id": 7,
+      "name": "NSITF Compliance Certificate.docx",
+      "category": "Employee Welfare",
+      "responsibleName": "Amina Yusuf",
+      "responsibleInitials": "AY",
+      "issueDate": "2023-01-10",
+      "expiryDate": "2024-04-15",
+      "status": "Expiring Soon"
+    },
+    {
+      "id": 8,
+      "name": "ITF Contribution Audit.xlsx",
+      "category": "HR Compliance",
+      "responsibleName": "Babajide Williams",
+      "responsibleInitials": "BW",
+      "issueDate": "2022-06-15",
+      "expiryDate": "2023-06-15",
+      "status": "Expired"
+    },
+    {
+      "id": 9,
+      "name": "DPR Gas Storage License.pdf",
+      "category": "Operational",
+      "responsibleName": "Olumide Adebayo",
+      "responsibleInitials": "OA",
+      "issueDate": "2024-01-05",
+      "expiryDate": "2025-01-04",
+      "status": "Active"
+    },
+    {
+      "id": 10,
+      "name": "NPA Wharfage Permit.pdf",
+      "category": "Logistics",
+      "responsibleName": "Chidi Okeke",
+      "responsibleInitials": "CO",
+      "issueDate": "2023-08-12",
+      "expiryDate": "2024-08-11",
+      "status": "Active"
+    },
+    {
+      "id": 11,
+      "name": "NUPRC Facility Inspection.pdf",
+      "category": "Safety",
+      "responsibleName": "Ngozi Ebere",
+      "responsibleInitials": "NE",
+      "issueDate": "2023-12-10",
+      "expiryDate": "2024-12-10",
+      "status": "Active"
+    },
+    {
+      "id": 12,
+      "name": "NEMSA Electrical Installation Cert.pdf",
+      "category": "Power/Safety",
+      "responsibleName": "Tunde Bakare",
+      "responsibleInitials": "TB",
+      "issueDate": "2024-01-20",
+      "expiryDate": "2024-06-15",
+      "status": "Expiring Soon"
+    },
+    {
+      "id": 13,
+      "name": "CAC Annual Returns 2025.pdf",
+      "category": "Legal",
+      "responsibleName": "Amina Yusuf",
+      "responsibleInitials": "AY",
+      "issueDate": "2025-01-01",
+      "expiryDate": "2026-01-01",
+      "status": "Active"
+    },
+    {
+      "id": 14,
+      "name": "Scaffolding Safety - Port Harcourt Site.docx",
+      "category": "HSE",
+      "responsibleName": "Emeka Uzor",
+      "responsibleInitials": "EU",
+      "issueDate": "2023-08-05",
+      "expiryDate": "2024-02-05",
+      "status": "Expired"
+    },
+    {
+      "id": 15,
+      "name": "NIMASA Sea Protection Levy Receipt.img",
+      "category": "Maritime",
+      "responsibleName": "Olumide Adebayo",
+      "responsibleInitials": "OA",
+      "issueDate": "2024-03-10",
+      "expiryDate": "2025-03-10",
+      "status": "Active"
+    },
+    {
+      "id": 16,
+      "name": "SON CAP Certification - Valve Parts.pdf",
+      "category": "Standards",
+      "responsibleName": "Babajide Williams",
+      "responsibleInitials": "BW",
+      "issueDate": "2023-11-15",
+      "expiryDate": "2024-11-15",
+      "status": "Active"
+    },
+    {
+      "id": 17,
+      "name": "Lagos State Fire Service Cert.pdf",
+      "category": "Safety",
+      "responsibleName": "Ngozi Ebere",
+      "responsibleInitials": "NE",
+      "issueDate": "2023-04-01",
+      "expiryDate": "2024-04-10",
+      "status": "Expiring Soon"
+    },
+    {
+      "id": 18,
+      "name": "PenCom Compliance Certificate.pdf",
+      "category": "HR Compliance",
+      "responsibleName": "Tunde Bakare",
+      "responsibleInitials": "TB",
+      "issueDate": "2023-02-12",
+      "expiryDate": "2024-02-12",
+      "status": "Expired"
+    },
+    {
+      "id": 19,
+      "name": "NAFDAC Workplace Hygiene Cert.pdf",
+      "category": "Health",
+      "responsibleName": "Amina Yusuf",
+      "responsibleInitials": "AY",
+      "issueDate": "2024-01-05",
+      "expiryDate": "2025-01-05",
+      "status": "Active"
+    },
+    {
+      "id": 20,
+      "name": "NCEC Category C - Marine.pdf",
+      "category": "Nigerian Content",
+      "responsibleName": "Babajide Williams",
+      "responsibleInitials": "BW",
+      "issueDate": "2023-09-20",
+      "expiryDate": "2024-09-20",
+      "status": "Active"
+    },
+    {
+      "id": 21,
+      "name": "VIO Road Worthiness - Fleet A.pdf",
+      "category": "Logistics",
+      "responsibleName": "Emeka Uzor",
+      "responsibleInitials": "EU",
+      "issueDate": "2024-02-01",
+      "expiryDate": "2024-05-01",
+      "status": "Expiring Soon"
+    },
+    {
+      "id": 22,
+      "name": "NUPRC Coastal Vessel License.pdf",
+      "category": "Upstream",
+      "responsibleName": "Olumide Adebayo",
+      "responsibleInitials": "OA",
+      "issueDate": "2023-06-15",
+      "expiryDate": "2024-06-15",
+      "status": "Active"
+    },
+    {
+      "id": 23,
+      "name": "BPP Interim Registration Report.pdf",
+      "category": "Procurement",
+      "responsibleName": "Tunde Bakare",
+      "responsibleInitials": "TB",
+      "issueDate": "2024-01-10",
+      "expiryDate": "2025-01-10",
+      "status": "Active"
+    },
+    {
+      "id": 24,
+      "name": "LIRS PAYE Remittance 2024.xlsx",
+      "category": "Fiscal",
+      "responsibleName": "Amina Yusuf",
+      "responsibleInitials": "AY",
+      "issueDate": "2024-01-01",
+      "expiryDate": "2024-12-31",
+      "status": "Active"
+    },
+    {
+      "id": 25,
+      "name": "Radiation Safety - NNRA License.pdf",
+      "category": "HSE",
+      "responsibleName": "Ngozi Ebere",
+      "responsibleInitials": "NE",
+      "issueDate": "2022-10-10",
+      "expiryDate": "2023-10-10",
+      "status": "Expired"
+    },
+    {
+      "id": 26,
+      "name": "NOGIC JQS - Marine Personnel.docx",
+      "category": "Nigerian Content",
+      "responsibleName": "Chidi Okeke",
+      "responsibleInitials": "CO",
+      "issueDate": "2024-03-01",
+      "expiryDate": "2025-03-01",
+      "status": "Active"
+    },
+    {
+      "id": 27,
+      "name": "Crane Load Test - Eko Atlantic Site.pdf",
+      "category": "Safety",
+      "responsibleName": "Emeka Uzor",
+      "responsibleInitials": "EU",
+      "issueDate": "2024-02-15",
+      "expiryDate": "2024-04-20",
+      "status": "Expiring Soon"
+    },
+    {
+      "id": 28,
+      "name": "NESREA Waste Discharge Permit.pdf",
+      "category": "Environment",
+      "responsibleName": "Chidi Okeke",
+      "responsibleInitials": "CO",
+      "issueDate": "2023-08-01",
+      "expiryDate": "2024-08-01",
+      "status": "Active"
+    },
+    {
+      "id": 29,
+      "name": "NIMASA Ship Registry Cert.pdf",
+      "category": "Maritime",
+      "responsibleName": "Olumide Adebayo",
+      "responsibleInitials": "OA",
+      "issueDate": "2023-12-01",
+      "expiryDate": "2024-12-01",
+      "status": "Active"
+    },
+    {
+      "id": 30,
+      "name": "Group Life Insurance - AXA Mansard.pdf",
+      "category": "HR Compliance",
+      "responsibleName": "Tunde Bakare",
+      "responsibleInitials": "TB",
+      "issueDate": "2023-11-01",
+      "expiryDate": "2024-11-01",
+      "status": "Active"
+    }
+  ]
 }
