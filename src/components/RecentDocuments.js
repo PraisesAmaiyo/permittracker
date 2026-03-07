@@ -3,11 +3,20 @@ import mockData from '@/data/mockDashboard.json';
 import { getFileIcon } from '@/utils/fileHelpers';
 import { Icon } from '@iconify/react';
 
-const statusStyles = {
+const documentStatusStyles = {
   Approved:
     'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
   'Pending Review':
     'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  Archived: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400',
+};
+
+const statusStyles = {
+  Active:
+    'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  'Expiring Soon':
+    'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
+  Expired: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
   Archived: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400',
 };
 
@@ -41,7 +50,6 @@ export default function RecentDocuments({ documents = [] }) {
             {mockData.recentDocuments.map((doc) => {
               const { icon, color } = getFileIcon(doc.name);
 
-              console.log(icon, color);
               return (
                 <tr
                   key={doc.id}

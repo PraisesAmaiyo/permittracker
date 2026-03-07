@@ -20,7 +20,7 @@
       "trend": "+5%",
       "color": "green",
       "icon": "solar:check-circle-bold",
-      "filterType": "active-permits"
+      "filterType": "active"
     },
     {
       "label": "Expiring Soon",
@@ -36,7 +36,7 @@
       "trend": "+8%",
       "color": "red",
       "icon": "solar:close-circle-bold",
-      "filterType": "expired-permits"
+      "filterType": "expired"
     }
   ],
   "monthlyExpirations": [
@@ -130,7 +130,7 @@
     },
     {
       "id": 5,
-      "name": "Medical Retainership - Lagoon Hospital.pdf",
+      "name": "Medical Retainership - Parex Hospital.pdf",
       "category": "Health & Safety",
       "responsibleName": "Olumide Adebayo",
       "responsibleInitials": "OA",

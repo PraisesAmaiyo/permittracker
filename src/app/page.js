@@ -13,6 +13,7 @@ import IntroHeading from '@/components/IntroHeading';
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { avatar, firstName, lastName } = mockData.user;
 
@@ -28,6 +29,8 @@ export default function Dashboard() {
         <Header
           headerName="Dashboard Overview"
           onOpenSidebar={() => setIsSidebarOpen(true)}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
         />
 
         {/* Content */}

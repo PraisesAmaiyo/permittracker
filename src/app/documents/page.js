@@ -6,33 +6,41 @@ import Header from '@/components/Header';
 import IntroHeading from '@/components/IntroHeading';
 import RepositoryTable from '@/components/RepositoryTable';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function DocumentRepository() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [visibleCount, setVisibleCount] = useState(10);
-
   const searchParams = useSearchParams();
-  const activeFilter = searchParams.get('filter') || 'all';
-
-  // Inside your component:
+  const [visibleCount, setVisibleCount] = useState(10);
   const router = useRouter();
 
-  //  Enhanced Filter Logic (Filter + Search)
+  // 1. Get the global search from the URL
+  const activeParamSearch = searchParams.get('search') || '';
+
+  // 2. Local search state (initialized with URL param)
+  const [searchQuery, setSearchQuery] = useState(activeParamSearch);
+
+  // 3. Keep local state in sync if the URL changes
+  useEffect(() => {
+    setSearchQuery(activeParamSearch);
+  }, [activeParamSearch]);
+
+  const activeFilter = searchParams.get('filter') || 'all';
+
   const filteredDocs = mockData.allDocuments.filter((doc) => {
+    // Check Category/Status
     const matchesFilter =
       activeFilter === 'all' ||
       doc.status.toLowerCase().replace(' ', '-') === activeFilter.toLowerCase();
 
-    const matchesSearch =
-      doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      doc.category.toLowerCase().includes(searchQuery.toLowerCase());
+    // Check Text (combined)
+    const searchTarget =
+      `${doc.name} ${doc.category} ${doc.responsibleName}`.toLowerCase();
+    const matchesSearch = searchTarget.includes(searchQuery.toLowerCase());
 
     return matchesFilter && matchesSearch;
   });
-
   // 2. Pagination Logic
   const paginatedDocs = filteredDocs.slice(0, visibleCount);
   const handleLoadMore = () => setVisibleCount((prev) => prev + 10);
@@ -67,12 +75,24 @@ export default function DocumentRepository() {
               return (
                 <button
                   key={tab}
-                  onClick={() =>
-                    router.push(
-                      `/documents?filter=${tab === 'All' ? 'all' : filterValue}`,
-                    )
-                  }
-                  className={`px-4 py-2.5 text-sm rounded-lg transition-all text-center  cursor-pointer  ${
+                  onClick={() => {
+                    // 1. Create a copy of current params
+                    const params = new URLSearchParams(searchParams.toString());
+
+                    // 2. Update the filter
+                    params.set('filter', tab === 'All' ? 'all' : filterValue);
+
+                    // 3. Keep the search query if it exists
+                    if (searchQuery) {
+                      params.set('search', searchQuery);
+                    } else {
+                      params.delete('search'); // Clean up if empty
+                    }
+
+                    // 4. Push the combined URL
+                    router.push(`/documents?${params.toString()}`);
+                  }}
+                  className={`px-4 py-2.5 text-sm rounded-lg transition-all text-center cursor-pointer ${
                     isActive
                       ? 'bg-white dark:bg-slate-700 shadow-sm font-bold text-primary dark:text-slate-100'
                       : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
@@ -83,6 +103,19 @@ export default function DocumentRepository() {
               );
             })}
           </div>
+
+          {(activeParamSearch || activeFilter !== 'all') && (
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                router.push('/documents'); // Go back to clean URL
+              }}
+              className="flex items-center gap-2 text-xs font-bold text-red-500 hover:text-red-600 transition-colors mb-4 cursor-pointer"
+            >
+              <Icon icon="solar:refresh-linear" />
+              Reset All Filters
+            </button>
+          )}
 
           <RepositoryTable documents={paginatedDocs} />
 
@@ -108,8 +141,6 @@ export default function DocumentRepository() {
             )}
           </div>
         </div>
-
-        {/* The big Repository Table goes here (similar to RecentDocuments but with more columns) */}
       </main>
     </div>
   );

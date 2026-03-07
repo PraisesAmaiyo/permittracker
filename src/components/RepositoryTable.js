@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import { getFileIcon } from '@/utils/fileHelpers';
+import { useRouter } from 'next/navigation';
 
 const statusStyles = {
   Active:
@@ -11,6 +12,8 @@ const statusStyles = {
 };
 
 export default function RepositoryTable({ documents }) {
+  const router = useRouter();
+
   return (
     <div className="bg-white dark:bg-[#1a202c] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
       <div className="overflow-x-auto overflow-y-hidden">
@@ -33,7 +36,11 @@ export default function RepositoryTable({ documents }) {
               return (
                 <tr
                   key={doc.id}
-                  className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors"
+                  className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    router.push(`/documents/${doc.id}`);
+                  }}
                 >
                   {/* Sticky Name Column */}
                   <td className="px-6 py-4 sticky left-0 bg-white dark:bg-[#1a202c] group-hover:bg-slate-50 dark:group-hover:bg-slate-800 shadow-[2px_0_5px_rgba(0,0,0,0.05)]">
@@ -51,7 +58,7 @@ export default function RepositoryTable({ documents }) {
 
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary border border-primary/20">
+                      <div className="w-7 h-7 rounded-full bg-primary/10 dark:bg-primary/30 flex items-center justify-center text-[10px] font-bold text-primary dark:text-slate-50 border border-primary/20">
                         {doc.responsibleInitials}
                       </div>
                       <span className="text-xs text-slate-600 dark:text-slate-300 font-medium">
