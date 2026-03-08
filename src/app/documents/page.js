@@ -8,6 +8,7 @@ import RepositoryTable from '@/components/RepositoryTable';
 import { Icon } from '@iconify/react';
 import { useEffect, useState, Suspense } from 'react'; // 1. Added Suspense here
 import { useRouter } from 'next/navigation';
+import { useLayout } from '@/context/LayoutContext';
 
 // 2. Rename the main function to a "Content" component
 function DocumentRepositoryContent() {
@@ -15,6 +16,7 @@ function DocumentRepositoryContent() {
   const searchParams = useSearchParams();
   const [visibleCount, setVisibleCount] = useState(10);
   const router = useRouter();
+  const { isCollapsed } = useLayout();
 
   // ... (All your existing logic remains exactly the same) ...
   const activeParamSearch = searchParams.get('search') || '';
@@ -45,7 +47,9 @@ function DocumentRepositoryContent() {
     <div className="flex min-h-screen">
       {/* ... Your existing JSX (Sidebar, Main, Header, etc.) ... */}
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <main className="flex-1 lg:ml-72 flex flex-col min-w-0 overflow-hidden">
+      <main
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-72'}`}
+      >
         <Header
           headerName={'Document Repository'}
           onOpenSidebar={() => setIsSidebarOpen(true)}

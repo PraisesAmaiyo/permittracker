@@ -2,6 +2,7 @@
 import mockData from '@/data/mockDashboard.json';
 import { getFileIcon } from '@/utils/fileHelpers';
 import { Icon } from '@iconify/react';
+import { useRouter } from 'next/navigation';
 
 const documentStatusStyles = {
   Approved:
@@ -22,6 +23,7 @@ const statusStyles = {
 
 export default function RecentDocuments({ documents = [] }) {
   const { recentDocuments } = mockData.recentDocuments;
+  const router = useRouter();
 
   return (
     <div className="bg-white dark:bg-[#1a202c] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
@@ -54,6 +56,10 @@ export default function RecentDocuments({ documents = [] }) {
                 <tr
                   key={doc.id}
                   className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors group"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    router.push(`/documents/${doc.id}`);
+                  }}
                 >
                   <td className="px-6 py-4 sticky left-0 bg-white dark:bg-[#1a202c] group-hover:bg-slate-50 dark:group-hover:bg-slate-800 shadow-[2px_0_5px_rgba(0,0,0,0.05)]">
                     <div className="flex items-center gap-3">

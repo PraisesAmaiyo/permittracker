@@ -10,10 +10,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import IntroHeading from '@/components/IntroHeading';
+import { useLayout } from '@/context/LayoutContext';
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const { isCollapsed } = useLayout();
 
   const { avatar, firstName, lastName } = mockData.user;
 
@@ -24,7 +26,9 @@ export default function Dashboard() {
       {/* Pass the state to Sidebar */}
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-      <main className="flex-1 lg:ml-72 flex flex-col min-w-0 overflow-hidden">
+      <main
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-72'}`}
+      >
         {/* Header */}
         <Header
           headerName="Dashboard Overview"

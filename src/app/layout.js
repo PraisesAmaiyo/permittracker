@@ -15,6 +15,7 @@
 import './globals.css';
 import StyledComponentsRegistry from '../lib/registry';
 import { NotificationProvider } from '@/context/NotificationContext';
+import { LayoutProvider } from '@/context/LayoutContext';
 
 export default function RootLayout({ children }) {
   return (
@@ -40,9 +41,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body suppressHydrationWarning>
-        <NotificationProvider>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-        </NotificationProvider>
+        <LayoutProvider>
+          <NotificationProvider>
+            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          </NotificationProvider>
+        </LayoutProvider>
       </body>
     </html>
   );

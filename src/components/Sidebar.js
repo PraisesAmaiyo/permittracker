@@ -4,9 +4,13 @@ import mockData from '@/data/mockDashboard.json';
 import { useNotifications } from '@/context/NotificationContext';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useState } from 'react';
+import { useLayout } from '@/context/LayoutContext';
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const { unreadCount } = useNotifications();
+  const { isCollapsed, setIsCollapsed } = useLayout();
+
   return (
     <>
       {/* Overlay for mobile */}
@@ -22,8 +26,24 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     fixed flex flex-col h-full z-40 w-72 bg-white dark:bg-[#1a202c] border-r border-slate-200 
     transition-transform duration-300 lg:translate-x-0
     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+    ${isCollapsed ? 'lg:w-20' : 'lg:w-72'}
   `}
       >
+        {/* Toggle Button for Desktop */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="hidden lg:flex absolute -right-3 top-20 bg-primary text-white rounded-full p-1 shadow-md hover:scale-110 transition-transform z-50"
+        >
+          <Icon
+            icon={
+              isCollapsed
+                ? 'solar:alt-arrow-right-bold'
+                : 'solar:alt-arrow-left-bold'
+            }
+            fontSize={22}
+          />
+        </button>
+
         {/* Close button for mobile */}
         <button
           onClick={() => setIsOpen(false)}
@@ -32,31 +52,44 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           <Icon icon="solar:close-circle-bold" fontSize={24} />
         </button>
 
-        <Logo />
+        <Logo isCollapsed={isCollapsed} />
 
         <nav className="flex-1 p-4 space-y-2">
-          <NavItem icon="solar:widget-bold" label="Dashboard" page="" active />
+          <NavItem
+            icon="solar:widget-bold"
+            label="Dashboard"
+            page=""
+            isCollapsed={isCollapsed}
+            active
+          />
           <NavItem
             icon="solar:document-bold"
             label="Documents"
             page="documents"
+            isCollapsed={isCollapsed}
           />
-          <NavItem icon="solar:chart-bold" label="Reports" page="reports" />
+          <NavItem
+            icon="solar:chart-bold"
+            label="Reports"
+            page="reports"
+            isCollapsed={isCollapsed}
+          />
           <NavItem
             icon="solar:bell-bing-bold"
             label="Notifications"
             badge={unreadCount > 0 ? unreadCount : null}
             page="notifications"
+            isCollapsed={isCollapsed}
           />
         </nav>
 
-        <SidebarUserProfile />
+        <SidebarUserProfile isCollapsed={isCollapsed} />
       </aside>
     </>
   );
 }
 
-function SidebarUserProfile() {
+function SidebarUserProfile({ isCollapsed }) {
   const { avatar, firstName, lastName } = mockData.user;
   return (
     <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#1a202c]">
@@ -70,7 +103,9 @@ function SidebarUserProfile() {
             e.target.src = 'https://ui-avatars.com/api/?name=PA';
           }}
         />
-        <div className="flex flex-col">
+        <div
+          className={`flex flex-col transition-all ${isCollapsed ? 'opacity-0 lg:hidden' : 'opacity-100'}`}
+        >
           <p className="text-sm font-bold text-slate-900 dark:text-white">
             {mockData.user.firstName} {mockData.user.lastName}
           </p>
@@ -81,7 +116,7 @@ function SidebarUserProfile() {
   );
 }
 
-function NavItem({ icon, label, badge, page }) {
+function NavItem({ icon, label, badge, page, isCollapsed }) {
   const pathname = usePathname();
 
   // Logic:
@@ -93,16 +128,23 @@ function NavItem({ icon, label, badge, page }) {
   return (
     <Link
       href={page === '' ? '/' : `/${page}`}
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+      title={isCollapsed ? label : ''} // Shows tooltip on hover when collapsed
+      className={` relative flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
         isActive
-          ? 'bg-primary/10 dark:bg-primary/20 text-primary  dark:text-slate-50 font-bold border-r-4 border-primary'
+          ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-slate-50 font-bold border-r-4 border-primary'
           : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
       }`}
     >
-      <Icon icon={icon} fontSize={22} />
-      <p className="text-sm font-medium flex-1">{label}</p>
+      <Icon icon={icon} className="min-w-[22px]" fontSize={22} />
+      <p
+        className={`text-sm font-medium flex-1 transition-opacity duration-200 ${isCollapsed ? 'opacity-0 lg:hidden' : 'opacity-100'}`}
+      >
+        {label}
+      </p>
       {badge && (
-        <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+        <span
+          className={`bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ${isCollapsed ? 'absolute top-2 right-4' : 'relative<main'}`}
+        >
           {badge}
         </span>
       )}
@@ -110,7 +152,7 @@ function NavItem({ icon, label, badge, page }) {
   );
 }
 
-function Logo() {
+function Logo({ isCollapsed }) {
   return (
     <div className="flex items-center gap-3 p-6 border-b border-slate-100 dark:border-slate-800">
       <div className="bg-primary/10 rounded-lg p-2 flex items-center justify-center">
@@ -119,7 +161,9 @@ function Logo() {
           className="text-primary text-2xl"
         />
       </div>
-      <div>
+      <div
+        className={`transition-all duration-300 ${isCollapsed ? 'opacity-0 lg:hidden' : 'opacity-100'}`}
+      >
         <h1 className="text-slate-900 dark:text-white text-lg font-bold">
           PermitTracker
         </h1>
