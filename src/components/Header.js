@@ -208,7 +208,7 @@ function SearchBar({
 
       {showDropdown && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1a202c] border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-50 overflow-hidden">
-          {/* HISTORY VIEW: Input is empty or very short */}
+          {/* 1. RECENT SEARCHES: Show this everywhere when input is empty */}
           {!searchQuery || searchQuery.trim().length <= 1 ? (
             history.length > 0 ? (
               <div className="py-2">
@@ -218,7 +218,7 @@ function SearchBar({
                 {history.map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer group/hist"
+                    className="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
                     onMouseDown={(e) => {
                       e.preventDefault();
                       setSearchQuery(item);
@@ -237,16 +237,16 @@ function SearchBar({
                     </div>
                     <button
                       onMouseDown={(e) => deleteHistoryItem(e, item)}
-                      className="p-1 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 rounded text-slate-400 transition-colors"
+                      className="p-1 text-slate-400 hover:text-red-500"
                     >
                       <Icon icon="solar:close-circle-bold" fontSize={16} />
                     </button>
                   </div>
                 ))}
               </div>
-            ) : null // Hide entirely if no history and no search
-          ) : (
-            /* RESULTS VIEW: User is typing */
+            ) : null
+          ) : /* 2. QUICK MATCHES: Show on Dashboard, but HIDE on Documents page */
+          window.location.pathname.includes('/documents') ? null : (
             <>
               <div className="p-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4">
                 Quick Matches
@@ -258,7 +258,7 @@ function SearchBar({
                     return (
                       <button
                         key={doc.id}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 text-left"
                         onMouseDown={(e) => {
                           e.preventDefault();
                           saveToHistory(searchQuery);
@@ -280,7 +280,7 @@ function SearchBar({
                   })}
                   <button
                     onMouseDown={(e) => performSearch(e)}
-                    className="w-full block text-center py-3 text-xs font-bold text-primary hover:bg-primary/5 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#1a202c]"
+                    className="w-full py-3 text-xs font-bold text-primary border-t border-slate-100 dark:border-slate-800"
                   >
                     See all results for "{searchQuery}"
                   </button>
@@ -297,6 +297,7 @@ function SearchBar({
     </div>
   );
 }
+
 // function SearchBar({
 //   searchQuery,
 //   handleSearch,
