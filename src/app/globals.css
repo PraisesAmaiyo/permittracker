@@ -33,3 +33,56 @@ body {
   @apply bg-background-light dark:bg-background-dark text-slate-900 dark:text-white;
   font-family: 'Inter', sans-serif;
 }
+
+.react-datepicker {
+  @apply !border-slate-200 dark:!border-slate-700 !bg-white dark:!bg-slate-900 !rounded-2xl !shadow-2xl !font-sans;
+}
+.react-datepicker__header {
+  @apply !bg-slate-50 dark:!bg-slate-800 !border-b-slate-200 dark:!border-b-slate-700 !rounded-t-2xl;
+}
+.react-datepicker__day--selected {
+  @apply !bg-primary !rounded-lg;
+}
+/* This makes the popup match your dark mode perfectly */
+
+/* Fix Calendar Text Colors for Dark Mode */
+.dark .react-datepicker {
+  background-color: #0f172a !important; /* matches slate-900 */
+  border-color: #1e293b !important; /* matches slate-800 */
+}
+
+.dark .react-datepicker__header {
+  background-color: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+/* THE MAIN FIX: Change text to white in dark mode */
+.dark .react-datepicker__current-month,
+.dark .react-datepicker__day-name,
+.dark .react-datepicker__day,
+.dark .react-datepicker__time-name,
+.dark .react-datepicker__year-read-view--selected-year,
+.dark .react-datepicker__year-dropdown {
+  color: #f8fafc !important; /* matches slate-50 */
+}
+
+/* Hover effects for days */
+.dark .react-datepicker__day:hover {
+  background-color: #334155 !important;
+}
+
+/* Selected Day */
+.react-datepicker__day--selected {
+  background-color: #3b82f6 !important; /* your primary color */
+  color: white !important;
+}
+
+/* Fix for the Year Dropdown items in dark mode */
+.dark .react-datepicker__year-option {
+  background-color: #0f172a !important;
+  color: white !important;
+}
+
+.dark .react-datepicker__year-option:hover {
+  background-color: #1e293b !important;
+}
