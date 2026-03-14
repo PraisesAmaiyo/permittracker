@@ -32,7 +32,7 @@ export default function RepositoryTable({ documents }) {
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
             {documents.map((doc) => {
-              const { icon, color } = getFileIcon(doc.name);
+              const { icon, color } = getFileIcon(doc.file_url);
               return (
                 <tr
                   key={doc.id}
@@ -53,7 +53,7 @@ export default function RepositoryTable({ documents }) {
                   </td>
 
                   <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400 ">
-                    {doc.category}
+                    {doc.categories.name}
                   </td>
 
                   <td className="px-6 py-4">
@@ -68,7 +68,7 @@ export default function RepositoryTable({ documents }) {
                   </td>
 
                   <td className="px-6 py-4 text-sm font-mono text-slate-500 dark:text-slate-400">
-                    {doc.expiryDate}
+                    {doc.expiry_date}
                   </td>
 
                   <td className="px-6 py-4 text-center">

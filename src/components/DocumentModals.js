@@ -174,7 +174,7 @@ export default function DocumentModals({
                   {selectedDoc?.name || 'Document Preview'}
                 </h3>
                 <p className="text-xs text-slate-500">
-                  {selectedDoc?.category}
+                  {selectedDoc?.categories.name}
                 </p>
               </div>
               <button
@@ -188,7 +188,8 @@ export default function DocumentModals({
             <div className="flex-1 bg-slate-100 dark:bg-slate-950">
               {/* Placeholder logic: Always shows the same file but feels dynamic */}
               <iframe
-                src="/sample-permit.pdf#toolbar=0"
+                //  src="/sample-permit.pdf#toolbar=0"
+                src={`${selectedDoc.file_url}#toolbar=0`}
                 className="w-full h-full border-none"
                 title="PDF Preview"
               />

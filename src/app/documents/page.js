@@ -10,6 +10,7 @@ import { useEffect, useState, Suspense } from 'react'; // 1. Added Suspense here
 import { useRouter } from 'next/navigation';
 import { useLayout } from '@/context/LayoutContext';
 import DocumentModals from '@/components/DocumentModals';
+import { supabase } from '@/lib/supabase';
 
 // 2. Rename the main function to a "Content" component
 function DocumentRepositoryContent() {
@@ -27,19 +28,85 @@ function DocumentRepositoryContent() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
+  const [permits, setPermits] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     setSearchQuery(activeParamSearch);
   }, [activeParamSearch]);
 
   const activeFilter = searchParams.get('filter') || 'all';
 
-  const filteredDocs = mockData.allDocuments.filter((doc) => {
+  const fetchPermits = async () => {
+    try {
+      setIsLoading(true);
+
+      // We select everything, but we can also join 'categories'
+      // to get the category name instead of just the ID!
+      const { data, error } = await supabase
+        .from('permits')
+        .select(
+          `
+        *,
+        categories (
+          name
+        )
+      `,
+        )
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (data) {
+        const formattedData = data.map((doc) => {
+          // Logic to determine status based on expiry_date
+          const today = new Date();
+          const expiry = new Date(doc.expiry_date);
+          const diffDays = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+          let calculatedStatus = 'Active';
+          if (diffDays < 0) calculatedStatus = 'Expired';
+          else if (diffDays <= 30) calculatedStatus = 'Expiring Soon';
+
+          console.log(diffDays);
+
+          return {
+            ...doc,
+            // Mapping Supabase (snake_case) to your UI (camelCase)
+            issueDate: doc.issue_date,
+            expiryDate: doc.expiry_date,
+            category: doc.categories?.name || 'General',
+            status: calculatedStatus,
+            // Responsible name can be hardcoded or fetched from a 'users' table later
+            responsibleName: 'Admin User',
+            responsibleInitials: 'AU',
+          };
+        });
+
+        setPermits(formattedData);
+      }
+    } catch (error) {
+      console.error('Error fetching permits:', error.message);
+      toast.error('Failed to load permits');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPermits();
+  }, []);
+
+  const filteredDocs = permits.filter((doc) => {
     const matchesFilter =
       activeFilter === 'all' ||
       doc.status.toLowerCase().replace(' ', '-') === activeFilter.toLowerCase();
 
+    // Access the joined category name safely
+    const categoryName = doc.categories?.name || 'Uncategorized';
+
     const searchTarget =
-      `${doc.name} ${doc.category} ${doc.responsibleName}`.toLowerCase();
+      `${doc.name} ${categoryName} ${doc.responsibleName}`.toLowerCase();
     const matchesSearch = searchTarget.includes(searchQuery.toLowerCase());
 
     return matchesFilter && matchesSearch;
@@ -47,6 +114,9 @@ function DocumentRepositoryContent() {
 
   const paginatedDocs = filteredDocs.slice(0, visibleCount);
   const handleLoadMore = () => setVisibleCount((prev) => prev + 10);
+
+  console.log(paginatedDocs);
+  console.log(permits);
 
   return (
     <>
@@ -118,7 +188,31 @@ function DocumentRepositoryContent() {
               </button>
             )}
 
-            <RepositoryTable documents={paginatedDocs} />
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                <p className="text-slate-500 font-medium">
+                  Fetching your documents...
+                </p>
+              </div>
+            ) : filteredDocs.length > 0 ? (
+              <RepositoryTable documents={paginatedDocs} />
+            ) : (
+              /* The Empty State for your Graphic Design skills */
+              <div className="text-center py-20 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-700">
+                <Icon
+                  icon="solar:folder-empty-bold-duotone"
+                  className="mx-auto text-slate-300"
+                  fontSize={64}
+                />
+                <h3 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">
+                  No permits found
+                </h3>
+                <p className="text-slate-500">
+                  Try adjusting your search or upload a new permit.
+                </p>
+              </div>
+            )}
 
             <div className="flex flex-col items-center gap-4 mt-8">
               <p className="text-sm text-slate-500">

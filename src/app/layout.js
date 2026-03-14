@@ -17,6 +17,7 @@ import StyledComponentsRegistry from '../lib/registry';
 import { NotificationProvider } from '@/context/NotificationContext';
 import { LayoutProvider } from '@/context/LayoutContext';
 import { Toaster } from 'sonner';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export default function RootLayout({ children }) {
   return (
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
           <NotificationProvider>
             <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
             <Toaster position="top-right" richColors closeButton />
+            <SpeedInsights />
           </NotificationProvider>
         </LayoutProvider>
       </body>
