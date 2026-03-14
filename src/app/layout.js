@@ -16,6 +16,7 @@ import './globals.css';
 import StyledComponentsRegistry from '../lib/registry';
 import { NotificationProvider } from '@/context/NotificationContext';
 import { LayoutProvider } from '@/context/LayoutContext';
+import { Toaster } from 'sonner';
 
 export default function RootLayout({ children }) {
   return (
@@ -44,6 +45,7 @@ export default function RootLayout({ children }) {
         <LayoutProvider>
           <NotificationProvider>
             <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            <Toaster position="top-right" richColors closeButton />
           </NotificationProvider>
         </LayoutProvider>
       </body>

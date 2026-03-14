@@ -3,6 +3,9 @@ import { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatDistanceStrict, isBefore } from 'date-fns';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
+import Button from './ui/Button';
 
 export default function DocumentModals({
   isPreviewOpen,
@@ -18,6 +21,8 @@ export default function DocumentModals({
   const [startDate, setStartDate] = useState(new Date());
   const [expiryDate, setExpiryDate] = useState(null);
 
+  const [uploading, setUploading] = useState(false);
+
   // Calculate duration for the "Spice" factor
   const getDuration = () => {
     if (startDate && expiryDate) {
@@ -30,15 +35,16 @@ export default function DocumentModals({
   const [formData, setFormData] = useState({
     name: '',
     expiryDate: '',
-    category: 'Upstream', // Default value
+    category: 'NUPRC', // Default value
   });
 
   // State for categories (Eventually this comes from Supabase)
   const [categories, setCategories] = useState([
-    'Upstream',
+    'NUPRC',
     'Safety',
-    'Environment',
-    'Tax',
+    'Safety (DPR)',
+    'Environmental',
+    'Tax (LIRS/FIRS)',
   ]);
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -88,6 +94,74 @@ export default function DocumentModals({
     }
   };
 
+  const handleSavePermit = async () => {
+    if (!selectedFile || !formData.name) {
+      return toast.error('Missing Information', {
+        description: 'Please provide a permit name and a file.',
+      });
+    }
+
+    setUploading(true);
+    const toastId = toast.loading('Starting upload process...');
+
+    try {
+      // 1. UPLOAD FILE TO STORAGE
+      const fileExt = selectedFile.name.split('.').pop();
+      const baseName = selectedFile.name.replace(`.${fileExt}`, '');
+
+      const cleanName = baseName.replace(/\s+/g, '_');
+
+      const fileName = `${cleanName}_${Date.now()}.${fileExt}`;
+      const filePath = fileName;
+      // const filePath = `permits/${fileName}`;
+
+      toast.loading('Uploading file to storage...', { id: toastId });
+
+      let { error: uploadError } = await supabase.storage
+        .from('permits')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) throw uploadError;
+
+      // 2. GET THE PUBLIC URL
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from('permits').getPublicUrl(filePath);
+
+      // Update toast to show we are saving to the database
+      toast.loading('Saving details to database...', { id: toastId });
+
+      // 3. SAVE RECORD TO DATABASE
+      const { error: dbError } = await supabase.from('permits').insert([
+        {
+          name: formData.name,
+          category_id: 'e61a7e8d-9106-4105-8cb4-d3e0d8417c5a', // We'll link ID later, for now text is fine
+          issue_date: startDate.toISOString(),
+          expiry_date: expiryDate.toISOString(),
+          file_url: publicUrl,
+        },
+      ]);
+
+      if (dbError) throw dbError;
+
+      // FINAL SUCCESS: Replace the loading toast with a success message
+      toast.success('Permit saved successfully!', {
+        id: toastId,
+        description: `${formData.name} has been added to your dashboard.`,
+      });
+
+      setIsAddModalOpen(false);
+    } catch (error) {
+      console.error('Error saving permit:', error.message);
+      toast.error('Action Failed', {
+        id: toastId,
+        description: error.message,
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <>
       {/* 1. PDF PREVIEW MODAL */}
@@ -126,12 +200,12 @@ export default function DocumentModals({
       {/* 2. ADD NEW PERMIT MODAL */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-800 custom-scrollbar relative">
             <h2 className="text-xl font-bold mb-4 dark:text-white">
               Upload New Permit
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               {/* Permit Name */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
@@ -139,6 +213,7 @@ export default function DocumentModals({
                 </label>
                 <input
                   type="text"
+                  required
                   name="name" // Added name
                   value={formData.name} // Added value
                   onChange={handleInputChange} // Added onChange
@@ -284,15 +359,21 @@ export default function DocumentModals({
               </div>
               {/* Action Buttons */}
               <div className="flex gap-3 pt-4">
-                <button
+                <Button
+                  variant="secondary"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="flex-1 py-3 text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"
+                  className="flex-1"
                 >
                   Cancel
-                </button>
-                <button className="flex-1 py-3 text-sm font-bold bg-primary text-white rounded-xl shadow-lg shadow-primary/30 hover:opacity-90 transition-all">
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleSavePermit}
+                  loading={uploading}
+                  className="flex-1"
+                >
                   Save Permit
-                </button>
+                </Button>
               </div>
             </div>
           </div>

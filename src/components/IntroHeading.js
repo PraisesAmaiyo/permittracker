@@ -3,6 +3,7 @@ import mockData from '@/data/mockDashboard.json';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import DocumentModals from './DocumentModals';
+import Button from './ui/Button';
 
 export default function IntroHeading({ title, subText }) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -20,13 +21,14 @@ export default function IntroHeading({ title, subText }) {
           </p>
         </div>
 
-        <button
+        <Button
+          variant="primary"
+          fullWidth={false}
           onClick={() => setIsAddModalOpen(true)}
-          className="w-full md:w-auto px-6 py-3 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/30 transition-all flex items-center justify-center gap-2 shrink-0  cursor-pointer "
         >
           <Icon icon="solar:add-circle-bold" fontSize={20} />
           <span>New Permit</span>
-        </button>
+        </Button>
       </div>
 
       <DocumentModals
